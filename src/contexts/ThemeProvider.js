@@ -12,6 +12,7 @@ const PRIMARY = {
 };
 const SECONDARY = {
   main: "#01b4e4",
+  contrastText: '#fff'
 };
 const SUCCESS = {
   lighter: "#eef8f1",

@@ -6,6 +6,7 @@ import DetailPage from '../pages/DetailPage';
 import BlankLayout from '../layouts/BlankLayout';
 import NotFoundPage from '../pages/NotFoundPage';
 
+
 export default function Router() {
   return (
     <Routes>

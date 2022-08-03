@@ -1,6 +1,7 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography, Menu, MenuItem } from "@mui/material";
 import { FMultiCheckbox } from "./form";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
+import React from "react";
 
 export const FILTER_GENRE_OPTIONS = [
   { id: 28, name: "Action" },
@@ -25,31 +26,47 @@ export const FILTER_GENRE_OPTIONS = [
 ];
 
 export default function MovieFilter({ resetFilter }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <Stack spacing={3} sx={{ p: 3, width: 250 }}>
-      <Stack spacing={1}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-          Genre
-        </Typography>
-        <FMultiCheckbox
-          name="genre"
-          options={FILTER_GENRE_OPTIONS}
-          sx={{ width: 1 }}
-        />
-      </Stack>
-
-      <Box>
-        <Button
-          size="large"
-          type="submit"
-          color="inherit"
-          variant="outlined"
-          onClick={resetFilter}
-          startIcon={<ClearAllIcon />}
-        >
-          Clear All
-        </Button>
-      </Box>
+    <Stack spacing={3} sx={{ p: 3 }}>
+      <Button
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        variant="contained"
+        color="primary"
+      >
+        Filter by Genre
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        
+          <Stack spacing={1} sx={{ p: 3 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Genres
+            </Typography>
+            <FMultiCheckbox
+              name="genre"
+              options={FILTER_GENRE_OPTIONS}
+              sx={{ width: 1 }}
+            />
+            
+          </Stack>
+        
+      </Menu>
     </Stack>
   );
 }
