@@ -1,6 +1,6 @@
-import { Box, Button, Stack, Typography, Menu, MenuItem } from "@mui/material";
+import {  Button, Stack, Typography, Menu } from "@mui/material";
 import { FMultiCheckbox } from "./form";
-import ClearAllIcon from "@mui/icons-material/ClearAll";
+
 import React from "react";
 
 export const FILTER_GENRE_OPTIONS = [

@@ -2,7 +2,7 @@ import { InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { FTextField } from "./form";
-import { useForm } from 'react-hook-form';
+
 
 function MovieSearch() {
   return (
