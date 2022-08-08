@@ -1,8 +1,10 @@
 import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 
+
 function LoadingScreen() {
   return (
+  
     <Box
       sx={{
         position: "absolute",

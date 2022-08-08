@@ -17,17 +17,19 @@ import {
   Chip,
 } from "@mui/material";
 import LoadingScreen from "../components/LoadingScreen";
+import "../index.css";
+import { CSSTransition } from "react-transition-group";
 
 export default function DetailPage() {
   let params = useParams();
   const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [render, setRender] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (params.id) {
       const getMovie = async () => {
-        setLoading(true);
+        setRender(false);
         try {
           const res = await axios.get(
             `${BASE_URL}/movie/${params.id}?api_key=${API_KEY}`
@@ -39,13 +41,19 @@ export default function DetailPage() {
           console.log(error);
           setError(error.message);
         }
-        setLoading(false);
+        setRender(true);
       };
       getMovie();
     }
   }, [params]);
 
   return (
+    <CSSTransition
+    in={render}
+    classNames="fade"
+    timeout={300}
+    unmountOnExit
+  >
     <Container
       sx={{
         my: 3,
@@ -73,7 +81,7 @@ export default function DetailPage() {
           justifyContent: "center",
         }}
       >
-        {loading ? (
+        {!render ? (
           <LoadingScreen />
         ) : (
           <>
@@ -221,6 +229,7 @@ export default function DetailPage() {
           </>
         )}
       </Box>
-    </Container>
+      </Container>
+      </CSSTransition>
   );
 }

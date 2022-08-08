@@ -13,12 +13,13 @@ function MovieCard({ movie }) {
         sx={{ minWidth: 250, minHeight: 320  }}
         onClick={() => navigate(`/movie/${movie.id}`)}
       >
-        <CardActionArea>
+        <CardActionArea sx={{height: 490}}>
           <CardMedia
             
             component="img"
             image={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             alt="movie poster"
+            
           />
         </CardActionArea>
 

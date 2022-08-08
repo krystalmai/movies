@@ -8,7 +8,7 @@ function MovieSearch() {
   return (
     <FTextField
       name="searchQuery"
-      sx={{ width: 300, py: 3 }}
+      sx={{ minWidth: 200, py: 3 }}
       size="small"
       InputProps={{
         startAdornment: (

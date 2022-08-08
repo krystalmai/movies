@@ -9,11 +9,13 @@ import MovieFilter from "../components/MovieFilter";
 import MovieSearch from "../components/MovieSearch";
 import LoadingScreen from "../components/LoadingScreen";
 import { applyFilter } from "../utils/filters";
+import "../index.css";
+import { CSSTransition } from "react-transition-group";
 
 export default function HomePage() {
   const [movies, setMovies] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [render, setRender] = useState(false);
   const [error, setError] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,10 +26,8 @@ export default function HomePage() {
       searchQuery: "",
     },
   });
-  const { watch, handleSubmit } = methods;
+  const { watch } = methods;
   const filters = watch();
-
-  const onSubmit = (data) => console.log(data);
 
   const handlePageChange = (e, selected) => {
     setCurrentPage(selected);
@@ -36,7 +36,7 @@ export default function HomePage() {
   // Get default movie list from API for each page
   useEffect(() => {
     const getMovies = async () => {
-      setLoading(true);
+      setRender(false);
       try {
         const res = await axios.get(
           `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&page=${currentPage}`
@@ -47,7 +47,7 @@ export default function HomePage() {
         console.log(error);
         setError(error.message);
       }
-      setLoading(false);
+      setRender(true);
     };
     getMovies();
   }, [currentPage]);
@@ -57,7 +57,7 @@ export default function HomePage() {
     if (filters.searchQuery) {
       console.log(filters.searchQuery);
       const getMovies = async () => {
-        setLoading(true);
+        setRender(false);
         try {
           const res = await axios.get(
             `${BASE_URL}/search/movie?api_key=${API_KEY}&page=1&query=${filters.searchQuery}`
@@ -68,7 +68,7 @@ export default function HomePage() {
           console.log(error);
           setError(error.message);
         }
-        setLoading(false);
+        setRender(true);
       };
       getMovies();
     }
@@ -81,50 +81,58 @@ export default function HomePage() {
     : applyFilter(movies, filters);
 
   return (
-    <Container sx={{ minHeight: "100vh", mt: 3 }}>
+    <Container sx={{ minHeight: "100vh", mt: 3, pr: 2 }}>
       <FormProvider methods={methods}>
         <Stack direction="row">
-          <MovieFilter />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <MovieSearch />
-          </form>
+          <MovieFilter
+            sx={{
+              display: filters.searchQuery ? "none" : "inline-block",
+            }}
+          />
+
+          <MovieSearch />
         </Stack>
       </FormProvider>
-      <Box
-        sx={{
-          mt: 5,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {loading ? (
-          <LoadingScreen />
-        ) : (
-          <>
-            {error ? (
-              <>
-                <Alert severity="error">{error}</Alert>
+      <CSSTransition in={render} classNames="fade" timeout={300} unmountOnExit>
+        <Box
+          sx={{
+            mt: 5,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {!render ? (
+            <LoadingScreen />
+          ) : (
+            <>
+              {error ? (
+                <>
+                  <Alert severity="error">{error}</Alert>
 
-                <Link href="/">Go back to home page</Link>
-              </>
-            ) : (
-              <>
-                <Pagination
-                  color="primary"
-                  count={200}
-                  onChange={handlePageChange}
-                  boundaryCount={3}
-                  siblingCount={2}
-                  page={currentPage}
-                />
-                <MovieList movies={filteredMovies} />
-              </>
-            )}
-          </>
-        )}
-      </Box>
+                  <Link href="/">Go back to home page</Link>
+                </>
+              ) : (
+                <>
+                  <Pagination
+                    color="primary"
+                    count={200}
+                    onChange={handlePageChange}
+                    boundaryCount={3}
+                    siblingCount={2}
+                    page={currentPage}
+                    sx={{
+                      display: filters.searchQuery ? "none" : "inline-block",
+                    }}
+                  />
+                  <MovieList movies={filteredMovies} />
+                </>
+              )}
+            </>
+          )}
+        </Box>
+      </CSSTransition>
     </Container>
   );
 }
