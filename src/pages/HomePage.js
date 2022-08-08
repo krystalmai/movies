@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Alert, Box, Container, Stack, Pagination, Link } from "@mui/material";
 import { FormProvider } from "../components/form";
 import { useForm } from "react-hook-form";
@@ -55,7 +55,6 @@ export default function HomePage() {
   // Get movies using search query if filters.searchQuery has a value
   useEffect(() => {
     if (filters.searchQuery) {
-      console.log(filters.searchQuery);
       const getMovies = async () => {
         setRender(false);
         try {
@@ -81,9 +80,9 @@ export default function HomePage() {
     : applyFilter(movies, filters);
 
   return (
-    <Container sx={{ minHeight: "100vh", mt: 3, pr: 2 }}>
+    <Container sx={{ minHeight: "100vh", minWidth: "100vw", mt: 3, pr: 2 }}>
       <FormProvider methods={methods}>
-        <Stack direction="row">
+        <Stack direction={{ xs: "column", sm: "row" }} >
           <MovieFilter
             sx={{
               display: filters.searchQuery ? "none" : "inline-block",

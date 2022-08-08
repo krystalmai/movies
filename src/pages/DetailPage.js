@@ -34,7 +34,6 @@ export default function DetailPage() {
           const res = await axios.get(
             `${BASE_URL}/movie/${params.id}?api_key=${API_KEY}`
           );
-          console.log(res.data);
           setMovie(res.data);
           setError("");
         } catch (error) {
@@ -193,7 +192,7 @@ export default function DetailPage() {
                           Produced by &nbsp;
                         </Typography>
                           {movie.production_companies.map((company, index) => (
-                            <Typography fontWeight="bold" variant="body" fontSize={14}>
+                            <Typography key={index} fontWeight="bold" variant="body" fontSize={14}>
                               {index === movie.production_companies.length - 1 ? `${company.name}.` : `${company.name}, `}
                             </Typography>
                           ))}

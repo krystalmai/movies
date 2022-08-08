@@ -4,7 +4,8 @@ import React from "react";
 import { FTextField } from "./form";
 
 
-function MovieSearch() {
+function MovieSearch({...others}) {
+
   return (
     <FTextField
       name="searchQuery"
@@ -17,6 +18,7 @@ function MovieSearch() {
           </InputAdornment>
         ),
       }}
+      {...others}
     />
   );
 }
