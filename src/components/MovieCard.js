@@ -2,44 +2,31 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Stack, Avatar } from "@mui/material";
+import { CardActionArea, Stack} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CircularProgressWithLabel from "./CircularProgressWithLabel";
 
 function MovieCard({ movie }) {
   const navigate = useNavigate();
   return (
     <>
       <Card
-        sx={{ minWidth: 250, minHeight: 320  }}
+        sx={{ width: 250, height: {md: "90vh", lg: "50vh"}, display: "flex", flexDirection:"column", justifyContent: "space-between" }}
         onClick={() => navigate(`/movie/${movie.id}`)}
       >
-        <CardActionArea sx={{height: 490}}>
+        <CardActionArea >
           <CardMedia
             
             component="img"
             image={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             alt="movie poster"
+            sx={{height: {md: "70vh", lg: "40vh"}, objectFit: "cover"}}
             
           />
         </CardActionArea>
-
-        <Avatar
-          sx={{
-            width: 50,
-            height: 50,
-            p: 1,
-            fontSize: 12,
-            fontWeight: "bold",
-            color: "text.main",
-            bgcolor: movie.popularity >= 50 ? "success.main" : "error.light",
-            position: "absolute",
-            transform: "translate(30%, -50%)",
-          }}
-        >
-          {movie.popularity.toFixed(1)}
-        </Avatar>
-      </Card>
-      <Stack mt={4} alignItems="center" justifyContent="center">
+        
+      <Stack sx={{flexGrow: 1}} p={2} direction="row" alignItems="center" justifyContent="flex-end">
+      <Stack alignItems="center" justifyContent="flex-start" flexGrow={1}>
         <Typography
           gutterBottom
           variant="h2"
@@ -47,14 +34,18 @@ function MovieCard({ movie }) {
           align="center"
           fontWeight="bold"
           component="div"
-          color="primary.main"
+          color="text"
         >
-          {movie.title}
+          {movie.title || movie.name}
         </Typography>
         <Typography variant="subtitle1" fontSize={15} color="text.light">
-          {new Date(movie.release_date).toLocaleDateString()}
+          {new Date(movie.release_date || movie.first_air_date).toLocaleDateString()}
         </Typography>
+          </Stack>
+          
+        <CircularProgressWithLabel value={movie.vote_average*10} color="error"/>
       </Stack>
+      </Card>
     </>
   );
 }

@@ -67,7 +67,7 @@ export default function DetailPage() {
         sx={{ mb: 4, alignSelf: "flex-start" }}
       >
         <Link underline="hover" color="inherit" component={RouterLink} to="/">
-          Top Rated
+          Home
         </Link>
         <Typography color="text.primary">{movie?.title}</Typography>
       </Breadcrumbs>
@@ -94,7 +94,7 @@ export default function DetailPage() {
                       container
                       spacing={1}
                       justifyContent="center"
-                      bgcolor="success.lighter"
+                      bgcolor="success"
                     >
                       <Grid
                         item

@@ -1,5 +1,5 @@
-import {  Button, Stack, Typography, Menu } from "@mui/material";
-import { FMultiCheckbox } from "./form";
+import { Button, Stack, Typography, Menu, MenuItem } from "@mui/material";
+import { FMultiCheckbox, FSelect } from "./form";
 
 import React from "react";
 
@@ -26,47 +26,15 @@ export const FILTER_GENRE_OPTIONS = [
 ];
 
 export default function MovieFilter({ resetFilter }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   return (
-    <Stack spacing={3} sx={{ p: 3 }}>
-      <Button
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-        variant="contained"
-        color="primary"
-      >
-        Filter by Genre
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        
-          <Stack spacing={1} sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              Genres
-            </Typography>
-            <FMultiCheckbox
-              name="genre"
-              options={FILTER_GENRE_OPTIONS}
-              sx={{ width: 1 }}
-            />
-            
-          </Stack>
-        
-      </Menu>
+    <Stack spacing={3} sx={{ p: 3 }} minWidth="30ch">
+      <FSelect name="genre" label="Genre" color="secondary">
+        {FILTER_GENRE_OPTIONS.map((genre) => (
+          <option key={genre.name} value={genre.id}>
+            {genre.name}
+          </option>
+        ))}
+      </FSelect>
     </Stack>
   );
 }

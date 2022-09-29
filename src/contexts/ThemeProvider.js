@@ -22,7 +22,7 @@ const SUCCESS = {
   contrastText: "#112A46",
 };
 const TEXT = {
-  main: "#fff",
+  main: "#ffffff",
   light: "#888",
 };
 
@@ -33,7 +33,9 @@ function ThemeProvider({ children }) {
       secondary: SECONDARY,
       success: SUCCESS,
       text: TEXT,
+      mode: "dark",
     },
+    
 
     shape: { borderRadius: 8 },
   };
