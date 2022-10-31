@@ -32,12 +32,28 @@ export const loadPopular = createAsyncThunk(
     return res.results
   }
 )
+export const getMoviesByGenre = createAsyncThunk(
+  "movies/getMoviesByGenre",
+  async (genreId) => {
+   
+    const res = await apiService.get(`discover/movie?api_key=${API_KEY}&with_genres=${genreId}`);
+    return res.results
+  }
+)
+export const searchMovies = createAsyncThunk(
+  "movies/searchMovies",
+  async (search) => {
+   
+    const res = await apiService.get(`search/movie?api_key=${API_KEY}&query=${search}`);
+    return res.results
+  }
+)
 
 const initialState = {
   isLoading: true,
   hasError: false,
-  search: null,
-  genres: null,
+  genre: 28,
+  movies: null,
   trendyMovies: null,
   nowplayingMovies: null,
   upcomingMovies: null,
@@ -54,10 +70,10 @@ export const moviesSlice = createSlice({
       state.pageNum = action.payload;
       state.isLoading = true
     },
-    setSearch: (state, action) => {
-      state.search = action.payload;
+    setGenre: (state, action) => {
+      state.genre = action.payload;
+    },
 
-    }
   },
   extraReducers: (builder) => {
     builder
@@ -71,6 +87,12 @@ export const moviesSlice = createSlice({
       state.isLoading = true
     })
       .addCase(loadPopular.pending, (state) => {
+      state.isLoading = true
+      })
+      .addCase(getMoviesByGenre.pending, (state) => {
+      state.isLoading = true
+      })
+      .addCase(searchMovies.pending, (state) => {
       state.isLoading = true
       })
       .addCase(loadTrendy.fulfilled, (state, action) => {
@@ -93,6 +115,16 @@ export const moviesSlice = createSlice({
         state.hasError = false;
         state.popularMovies = action.payload
       })
+      .addCase(getMoviesByGenre.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.hasError = false;
+        state.movies = action.payload
+      })
+      .addCase(searchMovies.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.hasError = false;
+        state.movies = action.payload
+      })
       .addCase(loadTrendy.rejected, (state, action) => {
         state.isLoading = false;
         toast.error(action.error.message)
@@ -109,8 +141,12 @@ export const moviesSlice = createSlice({
         state.isLoading = false;
         toast.error(action.error.message)
     })
+      .addCase(getMoviesByGenre.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error(action.error.message)
+    })
   }
 })
 
-export const { setPageNum, setSearch } = moviesSlice.actions;
+export const { setPageNum, setSearch, setGenre } = moviesSlice.actions;
 export default moviesSlice.reducer

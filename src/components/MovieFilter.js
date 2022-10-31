@@ -1,7 +1,9 @@
-import { Button, Stack, Typography, Menu, MenuItem } from "@mui/material";
-import { FMultiCheckbox, FSelect } from "./form";
+import { Stack, MenuItem, TextField } from "@mui/material";
+
+import { getMoviesByGenre, setGenre } from "../features/movies/moviesSlice";
 
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export const FILTER_GENRE_OPTIONS = [
   { id: 28, name: "Action" },
@@ -25,16 +27,28 @@ export const FILTER_GENRE_OPTIONS = [
   { id: 37, name: "Western" },
 ];
 
-export default function MovieFilter({ resetFilter }) {
+export default function MovieFilter() {
+  const genre = useSelector((state) => state.movies.genre);
+  const dispatch = useDispatch();
   return (
     <Stack spacing={3} sx={{ p: 3 }} minWidth="30ch">
-      <FSelect name="genre" label="Genre" color="secondary">
+      <TextField
+        select
+        name="genre"
+        label="Genre"
+        color="secondary"
+        value={genre}
+        onChange={(e) => {
+          dispatch(setGenre(e.target.value));
+          dispatch(getMoviesByGenre(e.target.value));
+        }}
+      >
         {FILTER_GENRE_OPTIONS.map((genre) => (
-          <option key={genre.name} value={genre.id}>
+          <MenuItem key={genre.name} value={genre.id}>
             {genre.name}
-          </option>
+          </MenuItem>
         ))}
-      </FSelect>
+      </TextField>
     </Stack>
   );
 }

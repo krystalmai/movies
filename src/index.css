@@ -6,7 +6,6 @@
 
 .fade-enter {
   opacity: 0;
-  
 }
 
 .fade-enter-active {
@@ -16,10 +15,12 @@
 }
 .fade-exit {
   opacity: 1;
- 
 }
 .fade-exit-active {
   opacity: 0.3;
-  
-  transition: opacity ease-out 1🇸
+
+  transition: opacity ease-out 1🇸;
 }
+
+
+

@@ -10,8 +10,8 @@ import Logo from "../components/Logo";
 function MainHeader() {
   return (
     <Box>
-      <AppBar position="static">
-        <Toolbar variant="dense">
+      <AppBar position="absolute" color='transparent' sx={{boxShadow: 'none'}} >
+        <Toolbar variant="dense" >
           <Stack direction="row" justifyContent="center" alignItems="center">
             <IconButton
           

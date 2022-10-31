@@ -1,13 +1,17 @@
-import { InputAdornment } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
-import { FTextField } from "./form";
+import { useDispatch } from "react-redux";
+import { searchMovies } from "../features/movies/moviesSlice";
 
 
-function MovieSearch({...others}) {
+
+function MovieSearch() {
+  
+  const dispatch = useDispatch();
 
   return (
-    <FTextField
+    <TextField
       name="searchQuery"
       color="secondary"
       sx={{ minWidth: 200, py: 3 }}
@@ -19,7 +23,9 @@ function MovieSearch({...others}) {
           </InputAdornment>
         ),
       }}
-      {...others}
+      onChange={(e) => {
+        dispatch(searchMovies(e.target.value))
+      }}
     />
   );
 }

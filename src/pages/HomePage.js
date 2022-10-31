@@ -11,7 +11,6 @@ import {
 import { FormProvider } from "../components/form";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
-import MovieList from "../components/MovieList";
 import MovieFilter from "../components/MovieFilter";
 import MovieSearch from "../components/MovieSearch";
 import LoadingScreen from "../components/LoadingScreen";
@@ -24,15 +23,14 @@ import {
   loadUpcoming,
   setPageNum,
 } from "../features/movies/moviesSlice";
+import MovieCarousel from "../components/MovieCarousel";
+import MovieList from "../components/MovieList";
 
 export default function HomePage() {
-
   const {
     pageNum,
     isLoading,
     hasError,
-    search,
-    genres,
     trendyMovies,
     nowplayingMovies,
     upcomingMovies,
@@ -40,14 +38,7 @@ export default function HomePage() {
   } = useSelector((state) => state.movies);
   const dispatch = useDispatch();
 
-  const methods = useForm({
-    defaultValues: {
-      genre: null,
-      searchQuery: "",
-    },
-  });
-  const { watch } = methods;
-  const filters = watch();
+
 
   // const handlePageChange = (e, selected) => {
   //   dispatch(setPageNum(selected));
@@ -70,16 +61,17 @@ export default function HomePage() {
     <Container
       sx={{
         minHeight: "100vh",
-        maxWidth: "100vw",
-        my: 3,
+        minWidth: "100vw",
+        mb: 3,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         direction: "column",
         alignItems: "center",
       }}
-    >
-      <FormProvider methods={methods}>
+      >
+      <MovieCarousel movies={nowplayingMovies} />
+
         <Stack
           minWidth="80vw"
           direction={{ xs: "column", sm: "row" }}
@@ -87,15 +79,11 @@ export default function HomePage() {
           gap={{ sm: 3, md: 10 }}
           mt={2}
         >
-          <MovieFilter
-            sx={{
-              display: filters.searchQuery ? "none" : "block",
-            }}
-          />
+          <MovieFilter/>
 
           <MovieSearch />
         </Stack>
-      </FormProvider>
+
       <CSSTransition
         in={!isLoading}
         classNames="fade"
@@ -128,8 +116,7 @@ export default function HomePage() {
                   alignItems="center"
                   maxWidth="80vw"
                 >
-                  <MovieList movies={popularMovies} name="Popular" />
-                  <MovieList movies={upcomingMovies} name="Upcoming" />
+                  <MovieList />
                 </Box>
               )}
             </>
