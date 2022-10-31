@@ -1,8 +1,8 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { Box, CardActionArea, CardContent, Stack } from "@mui/material";
+// import Typography from "@mui/material/Typography";
+import {  Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
 
