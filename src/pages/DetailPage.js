@@ -55,7 +55,7 @@ export default function DetailPage() {
   >
     <Container
       sx={{
-        my: 3,
+        my: 10,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -204,7 +204,7 @@ export default function DetailPage() {
                               variant="overline"
                               align="center"
                               sx={{
-                                bgcolor: "success.main",
+                                bgcolor: "error.main",
                                 borderRadius: 1,
                                 px: 0.5,
                               }}

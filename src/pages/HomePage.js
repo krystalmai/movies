@@ -21,8 +21,9 @@ import {
   // loadTrendy,
   loadUpcoming,
 } from "../features/movies/moviesSlice";
-import MovieCarousel from "../components/MovieCarousel";
+// import MovieCarousel from "../components/MovieCarousel";
 import MovieList from "../components/MovieList";
+import SwiperCarousel from "../components/Swiper";
 
 export default function HomePage() {
   const {
@@ -57,10 +58,12 @@ export default function HomePage() {
 
   return (
     <Container
+      disableGutters
+      maxWidth="100vw"
       sx={{
         minHeight: "100vh",
-        minWidth: "100vw",
         mb: 3,
+        mx: 0,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
@@ -68,7 +71,7 @@ export default function HomePage() {
         alignItems: "center",
       }}
       >
-      <MovieCarousel movies={nowplayingMovies} />
+      <SwiperCarousel movies={nowplayingMovies} />
 
         <Stack
           minWidth="80vw"

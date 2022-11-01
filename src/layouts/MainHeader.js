@@ -1,16 +1,20 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack} from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-
+import {useWindowScroll} from 'react-use';
 import Logo from "../components/Logo";
 
+
 function MainHeader() {
+  const { y } = useWindowScroll();
+  
   return (
-    <Box>
-      <AppBar position="absolute" color='transparent' sx={{boxShadow: 'none'}} >
+    <>
+    
+      <AppBar color={ y > 0 ? "primary" : "transparent"} sx={{boxShadow: 'none'}} >
         <Toolbar variant="dense" >
           <Stack direction="row" justifyContent="center" alignItems="center">
             <IconButton
@@ -24,11 +28,15 @@ function MainHeader() {
             <Typography variant="h6" color="success.light" component="div">
               The Movie Mob
             </Typography>
+
+
+
           </Stack>
           <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
-      </AppBar>
-    </Box>
+        </AppBar>
+    
+    </>
   );
 }
 
