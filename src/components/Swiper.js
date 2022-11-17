@@ -11,9 +11,10 @@ import "../index.css";
 // import required modules
 import { Parallax, Pagination, Navigation } from "swiper";
 import CarouselItem from "./CarouselItem";
+import { useSelector } from "react-redux";
 
-
-export default function SwiperCarousel({ movies }) {
+export default function SwiperCarousel() {
+  const movies = useSelector((state) => state.movies.nowplayingMovies);
   return (
     <>
       <Swiper
@@ -33,18 +34,16 @@ export default function SwiperCarousel({ movies }) {
         modules={[Pagination, Navigation, Parallax]}
         className="mySwiper"
       >
-        {movies
-          ?.slice(0, 10)
-          .map(
-            (movie) =>
-              movie.backdrop_path && (
-                <SwiperSlide key={movie.id}>
-                  {({ isActive }) => (
-                    <CarouselItem movie={movie} isActive={isActive} />
-                  )}
-                </SwiperSlide>
-              )
-          )}
+        {movies?.map(
+          (movie) =>
+            movie.backdrop_path && (
+              <SwiperSlide key={movie.id}>
+                {({ isActive }) => (
+                  <CarouselItem movie={movie} isActive={isActive} />
+                )}
+              </SwiperSlide>
+            )
+        )}
       </Swiper>
     </>
   );

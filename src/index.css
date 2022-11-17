@@ -54,17 +54,10 @@
   margin-left: 0;
   margin-right: 0;
 }
-
-/* animation */
-.fly-in {
-  animation: flyin 2s ease-in;
+#search-close-button{
+  padding: 0;
 }
 
-@keyframes flyin {
-  0% {
-    transform: translateY(900%);
-  }
-  100% {
-    transform: translateY(0%);
-  }
+#search-close-button:hover {
+  background-color: transparent;
 }

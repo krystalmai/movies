@@ -14,7 +14,7 @@ export const loadTrendy = createAsyncThunk(
 export const loadNowplaying = createAsyncThunk(
   "movies/loadNowplaying",
   async () => {
-    const res = await apiService.get(`movie/now_playing?api_key=${API_KEY}`);
+    const res = await apiService.get(`movie/now_playing?api_key=${API_KEY}&limit=10`);
     return res.results
   }
 )
@@ -34,11 +34,12 @@ export const loadPopular = createAsyncThunk(
 )
 export const getMoviesByGenre = createAsyncThunk(
   "movies/getMoviesByGenre",
-  async (genreId) => {
+    async (genreId) => {
    
-    const res = await apiService.get(`discover/movie?api_key=${API_KEY}&with_genres=${genreId}`);
-    return res.results
-  }
+      const res = await apiService.get(`discover/movie?api_key=${API_KEY}&with_genres=${genreId}`);
+      return res.results
+    }
+  
 )
 export const searchMovies = createAsyncThunk(
   "movies/searchMovies",
@@ -53,7 +54,8 @@ const initialState = {
   isLoading: true,
   hasError: false,
   genre: 28,
-  movies: null,
+  moviesByGenre: null,
+  searchResult: null,
   trendyMovies: null,
   nowplayingMovies: null,
   upcomingMovies: null,
@@ -118,12 +120,12 @@ export const moviesSlice = createSlice({
       .addCase(getMoviesByGenre.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasError = false;
-        state.movies = action.payload
+        state.moviesByGenre = action.payload
       })
       .addCase(searchMovies.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasError = false;
-        state.movies = action.payload
+        state.searchResult = action.payload
       })
       .addCase(loadTrendy.rejected, (state, action) => {
         state.isLoading = false;

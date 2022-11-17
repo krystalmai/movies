@@ -1,59 +1,31 @@
 import React, { useEffect } from "react";
-import {
-  Alert,
-  Box,
-  Container,
-  Stack,
-  // Pagination,
-  Link,
-  // Typography,
-} from "@mui/material";
+import { Alert, Box, Container, Link } from "@mui/material";
 
 import { useSelector, useDispatch } from "react-redux";
 import MovieFilter from "../components/MovieFilter";
-import MovieSearch from "../components/MovieSearch";
-import LoadingScreen from "../components/LoadingScreen";
+
 import "../index.css";
-import { CSSTransition } from "react-transition-group";
+
 import {
   loadNowplaying,
   loadPopular,
   // loadTrendy,
   loadUpcoming,
+  getMoviesByGenre,
 } from "../features/movies/moviesSlice";
-// import MovieCarousel from "../components/MovieCarousel";
+
 import MovieList from "../components/MovieList";
 import SwiperCarousel from "../components/Swiper";
 
 export default function HomePage() {
-  const {
-  
-    isLoading,
-    hasError,
-    // trendyMovies,
-    nowplayingMovies,
-    // upcomingMovies,
-    // popularMovies,
-  } = useSelector((state) => state.movies);
+  const { moviesByGenre, hasError } = useSelector((state) => state.movies);
   const dispatch = useDispatch();
 
-
-
-  // const handlePageChange = (e, selected) => {
-  //   dispatch(setPageNum(selected));
-  // };
-
-  // const TRENDY_TABS = [
-  //   { name: "Today", id: "day" },
-  //   { name: "This week", id: "week" },
-  // ];
-  // const currentTrendyTab = "day";
-
   useEffect(() => {
-    // dispatch(loadTrendy(currentTrendyTab));
     dispatch(loadNowplaying());
     dispatch(loadPopular());
     dispatch(loadUpcoming());
+    dispatch(getMoviesByGenre(28));
   }, [dispatch]);
 
   return (
@@ -70,60 +42,32 @@ export default function HomePage() {
         direction: "column",
         alignItems: "center",
       }}
+    >
+      <SwiperCarousel />
+
+      <MovieFilter />
+
+      <Box
+        sx={{
+          px: 5,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-      <SwiperCarousel movies={nowplayingMovies} />
+        {hasError ? (
+          <>
+            <Alert severity="error">Something went wrong</Alert>
 
-        <Stack
-          minWidth="80vw"
-          direction={{ xs: "column", sm: "row" }}
-          alignItems="center"
-          gap={{ sm: 3, md: 10 }}
-          mt={2}
-        >
-          <MovieFilter/>
-
-          <MovieSearch />
-        </Stack>
-
-      <CSSTransition
-        in={!isLoading}
-        classNames="fade"
-        timeout={300}
-        unmountOnExit
-      >
-        <Box
-          sx={{
-            my: 5,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {isLoading ? (
-            <LoadingScreen />
-          ) : (
-            <>
-              {hasError ? (
-                <>
-                  <Alert severity="error">Something went wrong</Alert>
-
-                  <Link href="/">Go back to home page</Link>
-                </>
-              ) : (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  maxWidth="80vw"
-                >
-                  <MovieList />
-                </Box>
-              )}
-            </>
-          )}
-        </Box>
-      </CSSTransition>
+            <Link href="/">Go back to home page</Link>
+          </>
+        ) : (
+          <Box minHeight="100vh">
+            <MovieList movies={moviesByGenre} />
+          </Box>
+        )}
+      </Box>
     </Container>
   );
 }
