@@ -16,17 +16,16 @@ import {
 
 import MovieList from "../components/MovieList";
 import SwiperCarousel from "../components/Swiper";
+import { Pages } from "@mui/icons-material";
 
 export default function HomePage() {
-  const { moviesByGenre, hasError } = useSelector((state) => state.movies);
+  const { page, hasError } = useSelector((state) => state.movies);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadNowplaying());
-    dispatch(loadPopular());
-    dispatch(loadUpcoming());
-    dispatch(getMoviesByGenre(28));
-  }, [dispatch]);
+    dispatch(loadNowplaying(page));
+    dispatch(getMoviesByGenre(28, Pages));
+  }, [dispatch, page]);
 
   return (
     <Container
@@ -64,7 +63,7 @@ export default function HomePage() {
           </>
         ) : (
           <Box minHeight="100vh">
-            <MovieList movies={moviesByGenre} />
+            <MovieList  />
           </Box>
         )}
       </Box>

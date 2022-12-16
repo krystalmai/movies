@@ -5,8 +5,8 @@ import {toast} from "react-toastify"
 
 export const loadTrendy = createAsyncThunk(
   "movies/loadTrendy",
-  async (timeWindow) => {
-    const res = await apiService.get(`/trending/all/${timeWindow}?api_key=${API_KEY}`);
+  async (timeWindow, page) => {
+    const res = await apiService.get(`/trending/all/${timeWindow}?api_key=${API_KEY}&page=${page}`);
     return res.results
   }
 );
@@ -20,32 +20,32 @@ export const loadNowplaying = createAsyncThunk(
 )
 export const loadUpcoming = createAsyncThunk(
   "movies/loadUpcoming",
-  async () => {
-    const res = await apiService.get(`movie/upcoming?api_key=${API_KEY}`);
+  async (page) => {
+    const res = await apiService.get(`movie/upcoming?api_key=${API_KEY}&page=${page}`);
     return res.results
   }
 )
 export const loadPopular = createAsyncThunk(
   "movies/loadPopular",
-  async () => {
-    const res = await apiService.get(`movie/popular?api_key=${API_KEY}`);
+  async (page) => {
+    const res = await apiService.get(`movie/popular?api_key=${API_KEY}&page=${page}`);
     return res.results
   }
 )
 export const getMoviesByGenre = createAsyncThunk(
   "movies/getMoviesByGenre",
-    async (genreId) => {
+    async (genreId, page) => {
    
-      const res = await apiService.get(`discover/movie?api_key=${API_KEY}&with_genres=${genreId}`);
+      const res = await apiService.get(`discover/movie?api_key=${API_KEY}&with_genres=${genreId}&page=${page}`);
       return res.results
     }
   
 )
 export const searchMovies = createAsyncThunk(
   "movies/searchMovies",
-  async (search) => {
+  async (search, page) => {
    
-    const res = await apiService.get(`search/movie?api_key=${API_KEY}&query=${search}`);
+    const res = await apiService.get(`search/movie?api_key=${API_KEY}&query=${search}&page=${page}`);
     return res.results
   }
 )
@@ -54,22 +54,22 @@ const initialState = {
   isLoading: true,
   hasError: false,
   genre: 28,
-  moviesByGenre: null,
-  searchResult: null,
-  trendyMovies: null,
+  movies: null,
   nowplayingMovies: null,
-  upcomingMovies: null,
-  popularMovies: null,
   totalPage: null,
-  pageNum: 1,
+  page: 1,
 }
 
 export const moviesSlice = createSlice({
   name: "movies",
   initialState,
   reducers: {
-    setPageNum: (state, action) => {
-      state.pageNum = action.payload;
+    changePage: (state, action) => {
+      if (action.payload) {
+        state.page = action.payload;
+    } else {
+        state.page++;
+    }
       state.isLoading = true
     },
     setGenre: (state, action) => {
@@ -100,7 +100,7 @@ export const moviesSlice = createSlice({
       .addCase(loadTrendy.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasError = false;
-        state.trendyMovies = action.payload
+        state.movies = action.payload
     })
       .addCase(loadNowplaying.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -110,22 +110,22 @@ export const moviesSlice = createSlice({
       .addCase(loadUpcoming.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasError = false;
-        state.upcomingMovies = action.payload
+        state.movies = action.payload
     })
       .addCase(loadPopular.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasError = false;
-        state.popularMovies = action.payload
+        state.movies = action.payload
       })
       .addCase(getMoviesByGenre.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasError = false;
-        state.moviesByGenre = action.payload
+        state.movies = action.payload
       })
       .addCase(searchMovies.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasError = false;
-        state.searchResult = action.payload
+        state.movies = action.payload
       })
       .addCase(loadTrendy.rejected, (state, action) => {
         state.isLoading = false;
@@ -150,5 +150,5 @@ export const moviesSlice = createSlice({
   }
 })
 
-export const { setPageNum, setSearch, setGenre } = moviesSlice.actions;
+export const { changePage, setGenre } = moviesSlice.actions;
 export default moviesSlice.reducer
